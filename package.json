@@ -1,7 +1,7 @@
 {
   "name": "vishals99-portfolio",
   "version": "1.0.0",
-  "homepage": "http://vishals99.github.io/VishalS99.github.io",
+  "homepage": "http://akashprabu.github.io/akashprabu.github.io",
   "description": "",
   "scripts": {
     "start": "vite",
@@ -17,7 +17,7 @@
     "autoprefixer": "^10.4.13",
     "eslint": "^8.35.0",
     "eslint-plugin-solid": "^0.10.0",
-    "gh-pages": "^6.0.0",
+    "gh-pages": "^6.1.1",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.7",
     "vite": "^4.1.1",
