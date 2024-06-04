@@ -35,12 +35,13 @@ function TechBubble(props) {
 
 function ExperienceUnit(props) {
   const s3Experiences = "https://sauron-data.s3.amazonaws.com/experiences/";
+  console.log(props)
   return (
     <div class="h-full flex flex-col">
       <div class="md:grid md:grid-cols-12 flex flex-col justify-center">
         <div class="md:col-span-3 ">
           <figure class="md:w-1/2 w-1/3 m-auto">
-            <img src={s3Experiences + props.logo} alt={props.company} />
+            <img src={'education/nitt.png'} alt={props.company} />
           </figure>
         </div>
         <div class="md:col-span-9 md:text-left h-full text-center">
@@ -49,21 +50,21 @@ function ExperienceUnit(props) {
               {props.role}
             </div>
             <div class="text-primary md:text-base text-sm">
-              {props.company} &#8728; {props.type} &#8728; {props.location}{" "}
-              &#8728; {props.duration}
+              {props.company} &#8728; {props.type} &#8728; {props.job_type}{" "}
+              &#8728; {props.location}
             </div>
           </div>
         </div>
       </div>
       <div class="md:text-xl w-full text-justify text-sm mt-2">
         <ul>
-          <For each={props.desc.split("*")}>
+          <For each={props.desc}>
             {(descItem) => <li class="m-4">&#8594; {descItem}</li>}
           </For>
         </ul>
       </div>
       <div class="md:ml-4 md:mb-0 w-full flex flex-row flex-wrap space-x-2 ml-2 mb-2 ">
-        <For each={props.tech.split(";")}>
+        <For each={props.tech}>
           {(techItem) => <TechBubble item={techItem} />}
         </For>
       </div>
@@ -140,19 +141,70 @@ function ExperienceMobile() {
 }
 
 function Experience() {
-  const [experiences, setExperiences] = createSignal();
-  const [currentExperience, setCurrentExperience] = createSignal();
-  createRenderEffect(() => {
-    fetch(url + "/exp/get/all")
-      .then((response) => response.json())
-      .then((data) => {
-        setExperiences(data);
-        setCurrentExperience(data[0]["data"]);
-      });
-  });
+  const [experiences, setExperiences] = createSignal([
+    {
+      id: 1,
+      role: "Graduate Research Assistant",
+      company: "Columbia University",
+      type: "Research",
+      location: "New York",
+      duration: "June 2022 (Present)",
+      logo: "associations/cu.png",
+      desc: [
+        "Collaborated with the Digital Video and Multimedia (DVMM) Lab on improving multi-modal deep learning models",
+        "Working with Prof. Shih-Fu Chang towards analyzing and extending Visual Commonsense Reasoning dataset; Benchmarking the dataset to evaluate improvements",
+      ],
+      tech: ["PyTorch", "Python"],
+    },
+    {
+      id: 2,
+      role: "Software Engineer",
+      company: "Oracle",
+      type: "Internship",
+      location: "Remote",
+      duration: "May 2020 (2 Months)",
+      logo: "associations/oracle.png",
+      desc: [
+        "Collaborated with the Identity Management Group and worked on Oracle Unified Directory (OUD)",
+        "Created and unit-tested 5 user-defined functions for the Helm Charts for Kubernetes of OUD servers and replication servers",
+      ],
+      tech: ["Docker", "Kubernetes", "Helm Charts"],
+    },
+    {
+      id: 3,
+      role: "Machine Learning Engineer",
+      company: "Sutherland Global",
+      type: "Internship",
+      location: "Chennai, India",
+      duration: "May 2019 (2 Months)",
+      logo: "associations/sutherland.png",
+      desc: [
+        "Built a module for Sutherland Extract to auto-align skewed photographed documents",
+        "Developed a custom trained UNet object segmentation module in Tensorflow and OpenCV and handled backend requests through a Flask server",
+        ,
+        "Improved accuracy by 40% over previous implementation",
+      ],
+      tech: ["Python", "Tensorflow", "Flask", "OpenCV"],
+    },
+  ]);
+  const [currentExperience, setCurrentExperience] = createSignal(
+    experiences()[0]
+  );
+  // createRenderEffect(() => {
+  //   fetch(url + "/exp/get/all")
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setExperiences(data);
+  //       setCurrentExperience(data[0]["data"]);
+  //     });
+  // });
+
+  console.log(experiences()
+  , currentExperience())
+
   const getSelectedExperience = (event) => {
     let id = $(event.target).data("exp");
-    setCurrentExperience(experiences()[id]["data"]);
+    setCurrentExperience(experiences()[id]);
     $(".exp-link").each(function(index) {
       $(this).removeClass("text-accent")
       $(this).hasClass("text-primary")? null :  $(this).addClass("text-primary");
@@ -189,6 +241,7 @@ function Experience() {
             </div>
             <div class="col-span-11">
               {currentExperience() ? (
+
                 <ExperienceUnit
                   role={currentExperience().role}
                   company={currentExperience().company}
